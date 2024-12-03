@@ -1,5 +1,14 @@
-;; This buffer is for text that is not saved, and for Lisp evaluation.
-;; To create a file, visit it with <open> and enter text in its buffer.
+;;; day1.el --- Advent of Code 2024-Day1  -*- lexical-binding: t -*-
+;; Copyright (C) 2024
+;; SPDX-License-Identifier: MIT
+;; Maintainer: bdosorio
+;; Keywords: advent-of-code
+;; Package: my
+
+;; This file is NOT part of GNU Emacs.
+
+;;; Commentary:
+;; Trying out ELISP this year for Advent of Code. This file solves https://adventofcode.com/2024/day/1
 
 
 (defun my-aoc-read-numbers-from-two-columns (filename)
