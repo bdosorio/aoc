@@ -9,7 +9,7 @@
 
 ;;; Commentary:
 ;; Trying out ELISP this year for Advent of Code. This file solves https://adventofcode.com/2024/day/1
-
+;; Using package my as I only intend to use for AoC calculations, not meant to be used directly by others.
 
 (defun my-aoc-read-numbers-from-two-columns (filename)
   "Read numbers from a file with two whitespace delimited columns into two lists"
