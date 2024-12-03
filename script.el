@@ -38,6 +38,7 @@
 	(i 0)
 	(sum 0)
 	)
+      ;; this would probably be a good case for reduce, but my elisp is crap
       (while (< i (length column1))
 	(let ((num1 (nth i column1)) (num2 (nth i column2)))
 	  (setq sum (+ sum (abs (- num1 num2))))
@@ -45,6 +46,22 @@
 	(setq i (1+ i)))
       sum
       ))
+
+(defun my-aoc-day1-part2 (inputTable)
+  "Read numbers from both columns, find frequency of all numbers in first column in second column, then sum the frequencies"
+  (let (
+	(column1 (nth 0 inputTable))
+	(column2 (nth 1 inputTable))
+	(sum 0)
+	)
+	(dolist (num1 column1)
+	  (setq freq (length (seq-filter (lambda (num2) (= num1 num2)) column2)))
+	  (setq sum (+ sum (* num1 freq)))
+	  )
+      sum
+      ))
+
+;; tests
 
 (ert-deftest day1-part1-no-input ()
   (should (= (my-aoc-day1-part1 (list '() '() )) 0))
@@ -66,11 +83,18 @@
   (should (= (my-aoc-day1-part1 (my-aoc-read-numbers-from-two-columns "./input.txt")) 2057374))
   )
 
-
-(let (
-      (result (my-aoc-read-numbers-from-two-columns "./input.txt")))
-  (setq column1 (nth 0 result))
-  (setq column2 (nth 1 result))
-  (message "Smallest in col1: %s, col2: %s" (car (sort column1 '<)) (car (sort column2 '<)))
+(ert-deftest day1-part2-one-line-no-match ()
+  (should (= (my-aoc-day1-part2 (list '(4) '(3) )) 0))
   )
 
+(ert-deftest day1-part2-one-line-one-match ()
+  (should (= (my-aoc-day1-part2 (list '(4) '(4) )) 4))
+  )
+
+(ert-deftest day1-part2-sample-input ()
+  (should (= (my-aoc-day1-part2 (list '(3 4 2 1 3 3) '(4 3 5 3 9 3) )) 31))
+  )
+
+(ert-deftest day1-part2-puzzle-input ()
+  (should (= (my-aoc-day1-part2 (my-aoc-read-numbers-from-two-columns "./input.txt")) 23177084))
+  )
