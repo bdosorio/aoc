@@ -1,0 +1,12 @@
+#+TITLE: bdosorio's Advent of Code
+
+This is a collection of my Advent of Code attempts, by year then by day.
+
+While I attempted prior to 2024, I didn't save my solutions.
+
+I don't chase the leaderboard, I simply use the season to try new languages and tools.
+
+* 2024 Goals
+
+** Use Emacs Lisp, try to only use built in functions
+** Complete first 10 days
