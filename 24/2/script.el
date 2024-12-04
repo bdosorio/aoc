@@ -27,31 +27,27 @@
     numberLists
     ))
 
-(print (my-aoc-day2-read-number-lists-from-lines "input.txt"))
-
-
 (defun my-aoc-day2-count-safe (levels)
   "Read levels and determine how many are safe"
-  (let (
-	(sum 0)
-	)
+  (let ((sum 0))
     (dolist (level levels)
       (let (
 	    (i 0)
-	    (isSafe 't)
+	    (isSafe t)
+	    (levelLength (length level))
 	    )
-	(while (and (< (1+ i) (length level)) isSafe)
-	  (let ((num1 (nth i level))
-		(num2 (nth (1+ i) level))
-		)
-	    (setq delta (abs (- num1 num2)))
-	    (unless (or (< delta 1) (> delta 3))
-		(setq isSafe nil))
-	    (setq i (1+ i)))	
-	  )
-        (when isSafe
-	  (setq sum (1+ sum))
-	)))
+	(unless (or (= 0 levelLength) (and (not (apply '< level)) (not (apply '> level))))
+	  (while (and (< (1+ i) levelLength) isSafe)
+		      (let ((num1 (nth i level))
+			    (num2 (nth (1+ i) level))
+			    (delta 0))
+			(setq delta (abs (- num1 num2)))
+			(when (or (< delta 1) (> delta 3))
+			  (setq isSafe nil))
+			(setq i (1+ i))))	
+          (when isSafe
+	      (setq sum (1+ sum))
+	      ))))
       sum
       ))
 
@@ -62,14 +58,37 @@
   )
 
 (ert-deftest my-aoc-day2-count-safe-one-line-ascending-is-safe ()
-  (should (= (my-aoc-day1-part1 (list '(1 2 3) )) 1))
+  (should (= (my-aoc-day2-count-safe (list '(1 2 3) )) 1))
   )
 
+(ert-deftest my-aoc-day2-count-safe-one-line-descending-is-safe ()
+  (should (= (my-aoc-day2-count-safe (list '(3 2 1) )) 1)) 
+  )
+
+
 (ert-deftest my-aoc-day2-count-safe-one-line-big-increase-is-unsafe ()
-  (should (= (my-aoc-day1-part1 (list '(1 2 7 8 9) )) 0))
+  (should (= (my-aoc-day2-count-safe (list '(1 2 7 8 9) )) 0))
+  )
+
+(ert-deftest my-aoc-day2-count-safe-one-line-big-decrease-is-unsafe ()
+  (should (= (my-aoc-day2-count-safe (list '(9 8 7 2 1) )) 0))
+  )
+
+(ert-deftest my-aoc-day2-count-safe-one-line-flip-asc-to-descend-is-unsafe ()
+  (should (= (my-aoc-day2-count-safe (list '(1 4 7 5 3) )) 0))
+  )
+
+(ert-deftest my-aoc-day2-count-safe-sample-input ()
+  (should (= (my-aoc-day2-count-safe (list '(7 6 4 2 1)
+                                           '(1 2 7 8 9)
+					   '(9 7 6 2 1)
+					   '(1 3 2 4 5)
+					   '(8 6 4 4 1)
+					   '(1 3 6 7 9)
+					   )) 2))
   )
 
 (ert-deftest my-aoc-day2-part2-puzzle-input ()
-  (should (= (my-aoc-day2-count-safe (my-aoc-day2-read-number-lists-from-lines "input.txt")) 2057374))
+  (should (= (my-aoc-day2-count-safe (my-aoc-day2-read-number-lists-from-lines "input.txt")) 639))
   )
 
